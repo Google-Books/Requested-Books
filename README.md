@@ -1,581 +1,656 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Requested Books</title>
     <style>
-        /* --- CSS VARIABLES & THEMES --- */
-        :root {
-            /* Dark Telegram Theme (Default) */
-            --bg-color: #17212b;
-            --card-bg: #242f3d;
-            --text-main: #ffffff;
-            --text-muted: #8b9bb4;
-            --accent: #5288c1;
-            --accent-hover: #4170a3;
-            --danger: #e53935;
-            --danger-hover: #b71c1c;
-            --success: #4caf50;
-            --success-hover: #388e3c;
-            --neon-orange: #ff9800;
-            --modal-bg: rgba(0, 0, 0, 0.6);
-            --border-radius: 12px;
-            --input-border: #3b4b5e;
-        }
+      /* --- CSS VARIABLES & THEMES --- */
+      :root {
+        /* Dark Telegram Theme (Default) */
+        --bg-color: #17212b;
+        --card-bg: #242f3d;
+        --text-main: #ffffff;
+        --text-muted: #8b9bb4;
+        --accent: #5288c1;
+        --accent-hover: #4170a3;
+        --danger: #e53935;
+        --danger-hover: #b71c1c;
+        --success: #4caf50;
+        --success-hover: #388e3c;
+        --neon-orange: #ff9800;
+        --modal-bg: rgba(0, 0, 0, 0.6);
+        --border-radius: 12px;
+        --input-border: #3b4b5e;
+      }
 
-        [data-theme="light"] {
-            /* Stable Light Theme */
-            --bg-color: #f5f5f5;
-            --card-bg: #ffffff;
-            --text-main: #222222;
-            --text-muted: #707579;
-            --accent: #3390ec;
-            --accent-hover: #2670b8;
-            --danger: #d32f2f;
-            --danger-hover: #b71c1c;
-            --success: #2e7d32;
-            --success-hover: #1b5e20;
-            --neon-orange: #f57c00;
-            --modal-bg: rgba(0, 0, 0, 0.4);
-            --border-radius: 12px;
-            --input-border: #cccccc;
-        }
+      [data-theme='light'] {
+        /* Stable Light Theme */
+        --bg-color: #f5f5f5;
+        --card-bg: #ffffff;
+        --text-main: #222222;
+        --text-muted: #707579;
+        --accent: #3390ec;
+        --accent-hover: #2670b8;
+        --danger: #d32f2f;
+        --danger-hover: #b71c1c;
+        --success: #2e7d32;
+        --success-hover: #1b5e20;
+        --neon-orange: #f57c00;
+        --modal-bg: rgba(0, 0, 0, 0.4);
+        --border-radius: 12px;
+        --input-border: #cccccc;
+      }
 
-        /* --- GLOBAL STYLES --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+      /* --- GLOBAL STYLES --- */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Helvetica, Arial, sans-serif;
+      }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        /* اضافه شده برای جلوگیری از رفتن محتوا زیر تبلیغ */
+        padding-bottom: 110px;
+      }
 
-        /* --- HEADER --- */
-        header {
-            background-color: var(--card-bg);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: background-color 0.3s ease;
-        }
+      /* استایل نگهدارنده بنر شناور تبلیغاتی */
+      #floating-ad {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        z-index: 999999999;
+        width: auto;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: auto;
+      }
 
-        h1 {
-            font-size: 1.4rem;
-            font-weight: 600;
-        }
+      /* --- HEADER --- */
+      header {
+        background-color: var(--card-bg);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        transition: background-color 0.3s ease;
+      }
 
-        .settings-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
+      h1 {
+        font-size: 1.4rem;
+        font-weight: 600;
+      }
 
-        .settings-btn:hover {
-            transform: rotate(90deg);
-        }
+      .settings-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
 
-        /* --- MAIN LAYOUT --- */
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
-            padding-bottom: 40px;
-        }
+      .settings-btn:hover {
+        transform: rotate(90deg);
+      }
 
-        /* --- CARDS & TEMPLATES --- */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            animation: fadeIn 0.4s ease forwards;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            transition: background-color 0.3s ease;
-        }
+      /* --- MAIN LAYOUT --- */
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 15px;
+        padding-bottom: 40px;
+      }
 
-        .book-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+      /* --- CARDS & TEMPLATES --- */
+      .card {
+        background-color: var(--card-bg);
+        border-radius: var(--border-radius);
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        animation: fadeIn 0.4s ease forwards;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        transition: background-color 0.3s ease;
+      }
 
-        .neon-book {
-            font-size: 2.2rem;
-            color: var(--neon-orange);
-            text-shadow: 0 0 5px var(--neon-orange), 0 0 15px var(--neon-orange);
-            flex-shrink: 0;
-        }
+      .book-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
 
-        .book-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex-grow: 1;
-            word-break: break-word;
-        }
+      .neon-book {
+        font-size: 2.2rem;
+        color: var(--neon-orange);
+        text-shadow: 0 0 5px var(--neon-orange), 0 0 15px var(--neon-orange);
+        flex-shrink: 0;
+      }
 
-        .book-info h3 {
-            font-size: 1.25rem;
-            margin: 0;
-            color: var(--text-main);
-        }
+      .book-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex-grow: 1;
+        word-break: break-word;
+      }
 
-        .book-info p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin: 0;
-        }
+      .book-info h3 {
+        font-size: 1.25rem;
+        margin: 0;
+        color: var(--text-main);
+      }
 
-        .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            color: #fff;
-            background-color: var(--accent);
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
+      .book-info p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin: 0;
+      }
 
-        .btn:active { transform: scale(0.98); }
-        .btn:hover { background-color: var(--accent-hover); }
+      .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        color: #fff;
+        background-color: var(--accent);
+        transition: background-color 0.2s ease, transform 0.1s ease;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
 
-        .btn-danger { background-color: var(--danger); }
-        .btn-danger:hover { background-color: var(--danger-hover); }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn:hover {
+        background-color: var(--accent-hover);
+      }
 
-        .btn-success { background-color: var(--success); }
-        .btn-success:hover { background-color: var(--success-hover); }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-        }
-        .btn-outline:hover {
-            background-color: var(--accent);
-            color: #fff;
-        }
-        
-        /* New styling for exit button to look distinctive */
-        .btn-exit {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
-        .btn-exit:hover {
-            background-color: var(--danger);
-            color: #fff;
-        }
+      .btn-danger {
+        background-color: var(--danger);
+      }
+      .btn-danger:hover {
+        background-color: var(--danger-hover);
+      }
 
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            width: 100%;
-        }
+      .btn-success {
+        background-color: var(--success);
+      }
+      .btn-success:hover {
+        background-color: var(--success-hover);
+      }
 
-        .input-group label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
+      .btn-outline {
+        background-color: transparent;
+        border: 1px solid var(--accent);
+        color: var(--accent);
+      }
+      .btn-outline:hover {
+        background-color: var(--accent);
+        color: #fff;
+      }
 
-        input[type="text"], input[type="url"], input[type="datetime-local"] {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--input-border);
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            outline: none;
-            transition: border-color 0.2s, background-color 0.3s, color 0.3s;
-            font-size: 1rem;
-        }
+      /* New styling for exit button to look distinctive */
+      .btn-exit {
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+      .btn-exit:hover {
+        background-color: var(--danger);
+        color: #fff;
+      }
 
-        input[type="text"]:focus, input[type="url"]:focus, input[type="datetime-local"]:focus {
-            border-color: var(--accent);
-        }
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+      }
 
-        /* --- ADMIN PANEL --- */
-        #admin-panel {
-            display: none;
-            border: 2px solid var(--accent);
-            margin-bottom: 30px;
-        }
+      .input-group label {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
 
-        .admin-controls {
-            display: flex;
-            gap: 10px;
-            margin-top: 5px;
-        }
+      input[type='text'],
+      input[type='url'],
+      input[type='datetime-local'] {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid var(--input-border);
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        outline: none;
+        transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+        font-size: 1rem;
+      }
 
-        .admin-controls .btn {
-            flex: 1;
-        }
+      input[type='text']:focus,
+      input[type='url']:focus,
+      input[type='datetime-local']:focus {
+        border-color: var(--accent);
+      }
 
-        .admin-badge {
-            background-color: var(--accent);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
+      /* --- ADMIN PANEL --- */
+      #admin-panel {
+        display: none;
+        border: 2px solid var(--accent);
+        margin-bottom: 30px;
+      }
 
-        /* --- MODAL --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--modal-bg);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeIn 0.2s ease;
-        }
+      .admin-controls {
+        display: flex;
+        gap: 10px;
+        margin-top: 5px;
+      }
 
-        .modal {
-            background-color: var(--card-bg);
-            padding: 25px;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: background-color 0.3s ease;
-        }
+      .admin-controls .btn {
+        flex: 1;
+      }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
+      .admin-badge {
+        background-color: var(--accent);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        display: inline-block;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
 
-        .close-btn {
-            background: none;
-            border: none;
-            color: var(--text-main);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
+      /* --- MODAL --- */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--modal-bg);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        animation: fadeIn 0.2s ease;
+      }
 
-        .theme-toggle {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      .modal {
+        background-color: var(--card-bg);
+        padding: 25px;
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+      }
 
-        .flex-row {
-            display: flex;
-            gap: 10px;
-        }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+      .close-btn {
+        background: none;
+        border: none;
+        color: var(--text-main);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
 
-        .empty-state {
-            text-align: center;
-            color: var(--text-muted);
-            margin-top: 50px;
-            font-size: 1.1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+      .theme-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-        /* ===== ADDED: FIXED BOTTOM BANNER AD ===== */
-        #bottom-banner-ad {
-            position: fixed;
-            left: 50%;
-            bottom: 0;
-            transform: translateX(-50%);
-            z-index: 9998;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            pointer-events: auto;
-        }
+      .flex-row {
+        display: flex;
+        gap: 10px;
+      }
 
-        #bottom-banner-ad iframe,
-        #bottom-banner-ad ins,
-        #bottom-banner-ad > div {
-            max-width: 100%;
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        /* Keep page content above the banner */
-        body {
-            padding-bottom: 120px;
-        }
-
-        @media (max-width: 767px) {
-            body {
-                padding-bottom: 80px;
-            }
-        }
+      .empty-state {
+        text-align: center;
+        color: var(--text-muted);
+        margin-top: 50px;
+        font-size: 1.1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <header>
-        <h1>Requested Books</h1>
-        <button class="settings-btn" onclick="openSettings()">⚙️</button>
+      <h1>Requested Books</h1>
+      <button class="settings-btn" onclick="openSettings()">⚙️</button>
     </header>
 
     <div class="container">
-        <div id="admin-panel" class="card">
-            <div><span class="admin-badge">Admin: Master Template Setup</span></div>
-            
-            <div class="input-group">
-                <label>Book Name</label>
-                <input type="text" id="master-name" placeholder="e.g., The Great Gatsby">
-            </div>
+      <div id="admin-panel" class="card">
+        <div><span class="admin-badge">Admin: Master Template Setup</span></div>
 
-            <div class="input-group">
-                <label>Publish Date & Time</label>
-                <input type="datetime-local" id="master-datetime">
-            </div>
-
-            <div class="input-group">
-                <label>Download Link</label>
-                <input type="url" id="master-link" placeholder="https://...">
-            </div>
-
-            <button class="btn btn-success" style="margin-top: 10px;" onclick="cloneTemplate()">➕ Clone & Publish Template</button>
-            <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin: 0;">Master template does not have a delete button.</p>
-            
-            <button class="btn btn-outline btn-exit" style="margin-top: 10px;" onclick="exitAdmin()">🚪 Exit Admin Mode</button>
+        <div class="input-group">
+          <label>Book Name</label>
+          <input
+            type="text"
+            id="master-name"
+            placeholder="e.g., The Great Gatsby"
+          />
         </div>
 
-        <div id="user-view"></div>
+        <div class="input-group">
+          <label>Publish Date & Time</label>
+          <input type="datetime-local" id="master-datetime" />
+        </div>
+
+        <div class="input-group">
+          <label>Download Link</label>
+          <input type="url" id="master-link" placeholder="https://..." />
+        </div>
+
+        <button
+          class="btn btn-success"
+          style="margin-top: 10px"
+          onclick="cloneTemplate()"
+        >
+          ➕ Clone & Publish Template
+        </button>
+        <p
+          style="
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin: 0;
+          "
+        >
+          Master template does not have a delete button.
+        </p>
+
+        <button
+          class="btn btn-outline btn-exit"
+          style="margin-top: 10px"
+          onclick="exitAdmin()"
+        >
+          🚪 Exit Admin Mode
+        </button>
+      </div>
+
+      <div id="user-view"></div>
     </div>
 
     <div class="modal-overlay" id="settings-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <span>Settings</span>
-                <button class="close-btn" onclick="closeSettings()">×</button>
-            </div>
-            
-            <div class="theme-toggle">
-                <span>App Theme</span>
-                <button class="btn btn-outline" id="theme-btn" style="width: auto;" onclick="toggleTheme()">Day Mode</button>
-            </div>
-
-            <hr style="border: 0; border-top: 1px solid var(--input-border); margin: 5px 0;">
-
-            <div class="input-group">
-                <label>Quick Download Code</label>
-                <div class="flex-row">
-                    <input type="text" id="quick-code-input" placeholder="Enter code...">
-                    <button class="btn" style="width: auto; padding: 0 15px;" onclick="checkQuickCode()">Submit</button>
-                </div>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Enter your code to quickly fetch files.</p>
-            </div>
+      <div class="modal">
+        <div class="modal-header">
+          <span>Settings</span>
+          <button class="close-btn" onclick="closeSettings()">×</button>
         </div>
+
+        <div class="theme-toggle">
+          <span>App Theme</span>
+          <button
+            class="btn btn-outline"
+            id="theme-btn"
+            style="width: auto"
+            onclick="toggleTheme()"
+          >
+            Day Mode
+          </button>
+        </div>
+
+        <hr
+          style="
+            border: 0;
+            border-top: 1px solid var(--input-border);
+            margin: 5px 0;
+          "
+        />
+
+        <div class="input-group">
+          <label>Quick Download Code</label>
+          <div class="flex-row">
+            <input
+              type="text"
+              id="quick-code-input"
+              placeholder="Enter code..."
+            />
+            <button
+              class="btn"
+              style="width: auto; padding: 0 15px"
+              onclick="checkQuickCode()"
+            >
+              Submit
+            </button>
+          </div>
+          <p
+            style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px"
+          >
+            Enter your code to quickly fetch files.
+          </p>
+        </div>
+      </div>
     </div>
 
-    <!-- ADDED: Global Floating Bottom Banner Ad -->
-    <div id="bottom-banner-ad"></div>
-
-    <!-- ADDED: Always-on Social Bar Ad -->
-    <script src="https://speedingdeadlyplays.com/b3/e9/4d/b3e94d023432c8cb40b981d7804166a2.js"></script>
-
     <script>
-        // --- STATE MANAGEMENT ---
-        let templates = JSON.parse(localStorage.getItem('requested_books_v2')) || [];
-        let isAdmin = false;
-        let editingId = null; // Tracks which template is currently being edited
+      // --- STATE MANAGEMENT ---
+      let templates =
+        JSON.parse(localStorage.getItem('requested_books_v2')) || [];
+      let isAdmin = false;
+      let editingId = null; // Tracks which template is currently being edited
 
-        // --- THEME MANAGEMENT ---
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        updateThemeBtn(currentTheme);
+      // --- THEME MANAGEMENT ---
+      const currentTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      updateThemeBtn(currentTheme);
 
-        function toggleTheme() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            const newTheme = isDark ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeBtn(newTheme);
+      function toggleTheme() {
+        const isDark =
+          document.documentElement.getAttribute('data-theme') === 'dark';
+        const newTheme = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeBtn(newTheme);
+      }
+
+      function updateThemeBtn(theme) {
+        const btn = document.getElementById('theme-btn');
+        btn.textContent = theme === 'dark' ? 'Day Mode' : 'Night Mode';
+      }
+
+      // --- SETTINGS MODAL ---
+      function openSettings() {
+        document.getElementById('settings-modal').style.display = 'flex';
+      }
+
+      function closeSettings() {
+        document.getElementById('settings-modal').style.display = 'none';
+      }
+
+      // --- ADMIN LOGIN (DISGUISED) ---
+      function checkQuickCode() {
+        const inputField = document.getElementById('quick-code-input');
+        const code = inputField.value.trim();
+
+        if (code === '0785993080') {
+          // Correct admin code
+          isAdmin = true;
+          document.getElementById('admin-panel').style.display = 'flex';
+          closeSettings();
+          inputField.value = '';
+          renderTemplates();
+        } else {
+          // NEW: Incorrect code alert notifier
+          alert(
+            'Invalid Quick Download Code. Please try again or check your code.'
+          );
+          inputField.value = '';
+          closeSettings();
+        }
+      }
+
+      // --- NEW: EXIT ADMIN MODE ---
+      function exitAdmin() {
+        isAdmin = false;
+        editingId = null; // Clear any active edits
+        document.getElementById('admin-panel').style.display = 'none';
+        renderTemplates(); // Re-render to hide edit/delete buttons from templates
+      }
+
+      // --- FORMATTING HELPERS ---
+      function formatDateTime(datetimeStr) {
+        if (!datetimeStr) return 'Date not specified';
+        const d = new Date(datetimeStr);
+        const dateOpts = { year: 'numeric', month: 'short', day: 'numeric' };
+        const timeOpts = { hour: '2-digit', minute: '2-digit' };
+        return `${d.toLocaleDateString(
+          undefined,
+          dateOpts
+        )} at ${d.toLocaleTimeString(undefined, timeOpts)}`;
+      }
+
+      // --- TEMPLATE LOGIC ---
+      function cloneTemplate() {
+        const nameInput = document.getElementById('master-name').value.trim();
+        const datetimeInput = document.getElementById('master-datetime').value;
+        const linkInput = document.getElementById('master-link').value.trim();
+
+        if (!nameInput || !linkInput) {
+          alert('Book Name and Download Link are required.');
+          return;
         }
 
-        function updateThemeBtn(theme) {
-            const btn = document.getElementById('theme-btn');
-            btn.textContent = theme === 'dark' ? 'Day Mode' : 'Night Mode';
+        const newTemplate = {
+          id: Date.now(),
+          name: nameInput,
+          datetime: datetimeInput,
+          link: linkInput,
+        };
+
+        templates.unshift(newTemplate); // Add to top
+        saveData();
+
+        // Clear Master Template Inputs
+        document.getElementById('master-name').value = '';
+        document.getElementById('master-datetime').value = '';
+        document.getElementById('master-link').value = '';
+
+        renderTemplates();
+      }
+
+      function deleteTemplate(id) {
+        if (confirm('Delete this published template?')) {
+          templates = templates.filter((t) => t.id !== id);
+          saveData();
+          renderTemplates();
+        }
+      }
+
+      // --- EDITING LOGIC ---
+      function startEdit(id) {
+        editingId = id;
+        renderTemplates();
+      }
+
+      function cancelEdit() {
+        editingId = null;
+        renderTemplates();
+      }
+
+      function saveEdit(id) {
+        const updatedName = document
+          .getElementById(`edit-name-${id}`)
+          .value.trim();
+        const updatedDate = document.getElementById(
+          `edit-datetime-${id}`
+        ).value;
+        const updatedLink = document
+          .getElementById(`edit-link-${id}`)
+          .value.trim();
+
+        if (!updatedName || !updatedLink) {
+          alert('Book Name and Link cannot be empty.');
+          return;
         }
 
-        // --- SETTINGS MODAL ---
-        function openSettings() {
-            document.getElementById('settings-modal').style.display = 'flex';
+        const templateIndex = templates.findIndex((t) => t.id === id);
+        if (templateIndex > -1) {
+          templates[templateIndex].name = updatedName;
+          templates[templateIndex].datetime = updatedDate;
+          templates[templateIndex].link = updatedLink;
+          saveData();
         }
 
-        function closeSettings() {
-            document.getElementById('settings-modal').style.display = 'none';
-        }
+        editingId = null;
+        renderTemplates();
+      }
 
-        // --- ADMIN LOGIN (DISGUISED) ---
-        function checkQuickCode() {
-            const inputField = document.getElementById('quick-code-input');
-            const code = inputField.value.trim();
-            
-            if (code === '0785993080') {
-                // Correct admin code
-                isAdmin = true;
-                document.getElementById('admin-panel').style.display = 'flex';
-                closeSettings();
-                inputField.value = ''; 
-                renderTemplates(); 
-            } else {
-                // NEW: Incorrect code alert notifier
-                alert("Invalid Quick Download Code. Please try again or check your code.");
-                inputField.value = '';
-                closeSettings();
-            }
-        }
-        
-        // --- NEW: EXIT ADMIN MODE ---
-        function exitAdmin() {
-            isAdmin = false;
-            editingId = null; // Clear any active edits
-            document.getElementById('admin-panel').style.display = 'none';
-            renderTemplates(); // Re-render to hide edit/delete buttons from templates
-        }
+      function saveData() {
+        localStorage.setItem('requested_books_v2', JSON.stringify(templates));
+      }
 
-        // --- FORMATTING HELPERS ---
-        function formatDateTime(datetimeStr) {
-            if (!datetimeStr) return 'Date not specified';
-            const d = new Date(datetimeStr);
-            const dateOpts = { year: 'numeric', month: 'short', day: 'numeric' };
-            const timeOpts = { hour: '2-digit', minute: '2-digit' };
-            return `${d.toLocaleDateString(undefined, dateOpts)} at ${d.toLocaleTimeString(undefined, timeOpts)}`;
-        }
+      // --- RENDER UI ---
+      function renderTemplates() {
+        const container = document.getElementById('user-view');
+        container.innerHTML = '';
 
-        // --- TEMPLATE LOGIC ---
-        function cloneTemplate() {
-            const nameInput = document.getElementById('master-name').value.trim();
-            const datetimeInput = document.getElementById('master-datetime').value;
-            const linkInput = document.getElementById('master-link').value.trim();
-            
-            if (!nameInput || !linkInput) {
-                alert('Book Name and Download Link are required.');
-                return;
-            }
-
-            const newTemplate = {
-                id: Date.now(),
-                name: nameInput,
-                datetime: datetimeInput,
-                link: linkInput
-            };
-
-            templates.unshift(newTemplate); // Add to top
-            saveData();
-            
-            // Clear Master Template Inputs
-            document.getElementById('master-name').value = '';
-            document.getElementById('master-datetime').value = '';
-            document.getElementById('master-link').value = '';
-            
-            renderTemplates();
-        }
-
-        function deleteTemplate(id) {
-            if (confirm("Delete this published template?")) {
-                templates = templates.filter(t => t.id !== id);
-                saveData();
-                renderTemplates();
-            }
-        }
-
-        // --- EDITING LOGIC ---
-        function startEdit(id) {
-            editingId = id;
-            renderTemplates();
-        }
-
-        function cancelEdit() {
-            editingId = null;
-            renderTemplates();
-        }
-
-        function saveEdit(id) {
-            const updatedName = document.getElementById(`edit-name-${id}`).value.trim();
-            const updatedDate = document.getElementById(`edit-datetime-${id}`).value;
-            const updatedLink = document.getElementById(`edit-link-${id}`).value.trim();
-
-            if (!updatedName || !updatedLink) {
-                alert("Book Name and Link cannot be empty.");
-                return;
-            }
-
-            const templateIndex = templates.findIndex(t => t.id === id);
-            if (templateIndex > -1) {
-                templates[templateIndex].name = updatedName;
-                templates[templateIndex].datetime = updatedDate;
-                templates[templateIndex].link = updatedLink;
-                saveData();
-            }
-
-            editingId = null;
-            renderTemplates();
-        }
-
-        function saveData() {
-            localStorage.setItem('requested_books_v2', JSON.stringify(templates));
-        }
-
-        // --- RENDER UI ---
-        function renderTemplates() {
-            const container = document.getElementById('user-view');
-            container.innerHTML = '';
-
-            if (templates.length === 0) {
-                container.innerHTML = `
+        if (templates.length === 0) {
+          container.innerHTML = `
                     <div class="empty-state">
                         <span style="font-size: 3rem; opacity: 0.5;">📚</span>
                         <span>No requested books are available right now.</span>
                     </div>`;
-                return;
-            }
+          return;
+        }
 
-            templates.forEach((template) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                
-                if (editingId === template.id && isAdmin) {
-                    // --- EDIT MODE VIEW ---
-                    card.innerHTML = `
+        templates.forEach((template) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          if (editingId === template.id && isAdmin) {
+            // --- EDIT MODE VIEW ---
+            card.innerHTML = `
                         <div class="admin-badge" style="align-self: flex-start; background-color: var(--neon-orange);">Editing Template</div>
                         <div class="input-group">
                             <label>Book Name</label>
@@ -594,9 +669,9 @@
                             <button class="btn btn-outline" onclick="cancelEdit()">Cancel</button>
                         </div>
                     `;
-                } else {
-                    // --- NORMAL USER VIEW ---
-                    let innerHTML = `
+          } else {
+            // --- NORMAL USER VIEW ---
+            let innerHTML = `
                         <div class="book-header">
                             <div class="neon-book">📘</div>
                             <div class="book-info">
@@ -604,86 +679,91 @@
                                 <p>📅 ${formatDateTime(template.datetime)}</p>
                             </div>
                         </div>
-                        <a href="${template.link}" target="_blank" class="btn">📥 Download File</a>
+                        <a href="${
+                          template.link
+                        }" target="_blank" class="btn">📥 Download File</a>
                     `;
 
-                    // --- ADMIN CONTROLS ON CLONED TEMPLATE ---
-                    if (isAdmin) {
-                        innerHTML += `
+            // --- ADMIN CONTROLS ON CLONED TEMPLATE ---
+            if (isAdmin) {
+              innerHTML += `
                             <hr style="border: 0; border-top: 1px dashed var(--input-border); margin: 5px 0;">
                             <div class="admin-controls">
                                 <button class="btn btn-outline" onclick="startEdit(${template.id})">✏️ Edit</button>
                                 <button class="btn btn-danger" onclick="deleteTemplate(${template.id})">🗑 Delete</button>
                             </div>
                         `;
-                    }
-
-                    card.innerHTML = innerHTML;
-                }
-
-                container.appendChild(card);
-            });
-        }
-
-        // --- INITIALIZATION ---
-        // Automatically render templates on page load
-        renderTemplates();
-
-        // --- ADDED: Responsive floating banner loader + 10s refresh ---
-        function loadBottomBannerAd() {
-            const adContainer = document.getElementById('bottom-banner-ad');
-            if (!adContainer) return;
-
-            const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
-            let adHTML = '';
-
-            if (width < 768) {
-                adHTML = `
-                    <script>
-                        atOptions = {
-                            'key' : '3b8048b78e2b0fb0b882483f96fca8a2',
-                            'format' : 'iframe',
-                            'height' : 50,
-                            'width' : 320,
-                            'params' : {}
-                        };
-                    <\/script>
-                    <script src="https://speedingdeadlyplays.com/3b8048b78e2b0fb0b882483f96fca8a2/invoke.js"><\/script>
-                `;
-            } else if (width < 1024) {
-                adHTML = `
-                    <script>
-                        atOptions = {
-                            'key' : '27bf67bdd07dd3734a6fdff8c7879c99',
-                            'format' : 'iframe',
-                            'height' : 60,
-                            'width' : 468,
-                            'params' : {}
-                        };
-                    <\/script>
-                    <script src="https://speedingdeadlyplays.com/27bf67bdd07dd3734a6fdff8c7879c99/invoke.js"><\/script>
-                `;
-            } else {
-                adHTML = `
-                    <script>
-                        atOptions = {
-                            'key' : '30c18b6ace1c2676949453fd6ac33776',
-                            'format' : 'iframe',
-                            'height' : 90,
-                            'width' : 728,
-                            'params' : {}
-                        };
-                    <\/script>
-                    <script src="https://speedingdeadlyplays.com/30c18b6ace1c2676949453fd6ac33776/invoke.js"><\/script>
-                `;
             }
 
-            adContainer.innerHTML = adHTML;
+            card.innerHTML = innerHTML;
+          }
+
+          container.appendChild(card);
+        });
+      }
+
+      // --- INITIALIZATION ---
+      // Automatically render templates on page load
+      renderTemplates();
+    </script>
+
+    <script
+      type="text/javascript"
+      src="//speedingdeadlyplays.com/YOUR_SOCIAL_BAR_CODE/invoke.js"
+    ></script>
+
+    <div id="floating-ad"></div>
+
+    <script>
+      (function () {
+        function loadAd() {
+          const adContainer = document.getElementById('floating-ad');
+
+          // پاک کردن بنر قبلی برای لود شدن بنر جدید (عملیات رفرش)
+          adContainer.innerHTML = '';
+
+          let key = '';
+          let width = 0;
+          let height = 0;
+          const w = window.innerWidth;
+
+          // انتخاب سایز مناسب بر اساس صفحه کاربر
+          if (w <= 360) {
+            key = '3b8048b78e2b0fb0b882483f96fca8a2'; // کد تبلیغ ۳۲۰ در ۵۰ خودت رو بذار
+            width = 320;
+            height = 50;
+          } else if (w <= 768) {
+            key = '27bf67bdd07dd3734a6fdff8c7879c99'; // کد تبلیغ ۴۶۸ در ۶۰ خودت رو بذار
+            width = 468;
+            height = 60;
+          } else {
+            key = '30c18b6ace1c2676949453fd6ac33776'; // کد تبلیغ ۷۲۸ در ۹۰ خودت رو بذار
+            width = 728;
+            height = 90;
+          }
+
+          // تنظیمات شبکه تبلیغاتی
+          window.atOptions = {
+            key: key,
+            format: 'iframe',
+            height: height,
+            width: width,
+            params: {},
+          };
+
+          // ساخت اسکریپت جدید و تزریق به کانتینر
+          const s = document.createElement('script');
+          s.src = 'https://speedingdeadlyplays.com/' + key + '/invoke.js';
+          s.async = true;
+          adContainer.appendChild(s);
         }
 
-        loadBottomBannerAd();
-        setInterval(loadBottomBannerAd, 10000);
-        window.addEventListener('resize', loadBottomBannerAd);
+        // اجرای اولیه به محض باز شدن سایت
+        loadAd();
+
+        // اجرای مجدد تابع به صورت خودکار هر ۱۳ ثانیه (۱۳۰۰۰ میلی‌ثانیه)
+        setInterval(loadAd, 13000);
+      })();
     </script>
-</body>
+  </body>
 </html>
