@@ -313,6 +313,36 @@
             align-items: center;
             gap: 10px;
         }
+
+        /* ===== ADDED: FIXED BOTTOM BANNER AD ===== */
+        #bottom-banner-ad {
+            position: fixed;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            z-index: 9998;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            pointer-events: auto;
+        }
+
+        #bottom-banner-ad iframe,
+        #bottom-banner-ad ins,
+        #bottom-banner-ad > div {
+            max-width: 100%;
+        }
+
+        /* Keep page content above the banner */
+        body {
+            padding-bottom: 120px;
+        }
+
+        @media (max-width: 767px) {
+            body {
+                padding-bottom: 80px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -374,6 +404,12 @@
             </div>
         </div>
     </div>
+
+    <!-- ADDED: Global Floating Bottom Banner Ad -->
+    <div id="bottom-banner-ad"></div>
+
+    <!-- ADDED: Always-on Social Bar Ad -->
+    <script src="https://speedingdeadlyplays.com/b3/e9/4d/b3e94d023432c8cb40b981d7804166a2.js"></script>
 
     <script>
         // --- STATE MANAGEMENT ---
@@ -593,95 +629,61 @@
         // Automatically render templates on page load
         renderTemplates();
 
-<script src="https://speedingdeadlyplays.com/b3/e9/4d/b3e94d023432c8cb40b981d7804166a2.js"></script>
+        // --- ADDED: Responsive floating banner loader + 10s refresh ---
+        function loadBottomBannerAd() {
+            const adContainer = document.getElementById('bottom-banner-ad');
+            if (!adContainer) return;
 
-<!-- بنر شناور پایین صفحه -->
-<div id="floating-ad"></div>
+            const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
+            let adHTML = '';
 
-<style>
-#floating-ad{
-    position:fixed;
-    left:50%;
-    transform:translateX(-50%);
-    bottom:0;
-    z-index:999999999;
+            if (width < 768) {
+                adHTML = `
+                    <script>
+                        atOptions = {
+                            'key' : '3b8048b78e2b0fb0b882483f96fca8a2',
+                            'format' : 'iframe',
+                            'height' : 50,
+                            'width' : 320,
+                            'params' : {}
+                        };
+                    <\/script>
+                    <script src="https://speedingdeadlyplays.com/3b8048b78e2b0fb0b882483f96fca8a2/invoke.js"><\/script>
+                `;
+            } else if (width < 1024) {
+                adHTML = `
+                    <script>
+                        atOptions = {
+                            'key' : '27bf67bdd07dd3734a6fdff8c7879c99',
+                            'format' : 'iframe',
+                            'height' : 60,
+                            'width' : 468,
+                            'params' : {}
+                        };
+                    <\/script>
+                    <script src="https://speedingdeadlyplays.com/27bf67bdd07dd3734a6fdff8c7879c99/invoke.js"><\/script>
+                `;
+            } else {
+                adHTML = `
+                    <script>
+                        atOptions = {
+                            'key' : '30c18b6ace1c2676949453fd6ac33776',
+                            'format' : 'iframe',
+                            'height' : 90,
+                            'width' : 728,
+                            'params' : {}
+                        };
+                    <\/script>
+                    <script src="https://speedingdeadlyplays.com/30c18b6ace1c2676949453fd6ac33776/invoke.js"><\/script>
+                `;
+            }
 
-    width:auto;
-    height:auto;
+            adContainer.innerHTML = adHTML;
+        }
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    pointer-events:auto;
-}
-
-/* فاصله برای اینکه محتوا زیر بنر نرود */
-body{
-    padding-bottom:110px;
-}
-</style>
-
-<script>
-
-(function(){
-
-let key="";
-let width=0;
-let height=0;
-
-const w=window.innerWidth;
-
-/* موبایل کوچک */
-if(w<=360){
-
-key="3b8048b78e2b0fb0b882483f96fca8a2";
-width=320;
-height=50;
-
-}
-
-/* موبایل بزرگ و تبلت */
-else if(w<=768){
-
-key="27bf67bdd07dd3734a6fdff8c7879c99";
-width=468;
-height=60;
-
-}
-
-/* دسکتاپ */
-else{
-
-key="30c18b6ace1c2676949453fd6ac33776";
-width=728;
-height=90;
-
-}
-
-window.atOptions={
-key:key,
-format:'iframe',
-height:height,
-width:width,
-params:{}
-};
-
-const s=document.createElement("script");
-
-s.src=
-"https://speedingdeadlyplays.com/"
-+key+
-"/invoke.js";
-
-s.async=true;
-
-document
-.getElementById("floating-ad")
-.appendChild(s);
-
-})();
-
-</script>
+        loadBottomBannerAd();
+        setInterval(loadBottomBannerAd, 10000);
+        window.addEventListener('resize', loadBottomBannerAd);
+    </script>
 </body>
 </html>
