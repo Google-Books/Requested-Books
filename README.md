@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Requested Books</title>
     <style>
         /* --- CSS VARIABLES & THEMES --- */
         :root {
@@ -594,6 +593,95 @@
         // Automatically render templates on page load
         renderTemplates();
 
-    </script>
+<script src="https://speedingdeadlyplays.com/b3/e9/4d/b3e94d023432c8cb40b981d7804166a2.js"></script>
+
+<!-- بنر شناور پایین صفحه -->
+<div id="floating-ad"></div>
+
+<style>
+#floating-ad{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:0;
+    z-index:999999999;
+
+    width:auto;
+    height:auto;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    pointer-events:auto;
+}
+
+/* فاصله برای اینکه محتوا زیر بنر نرود */
+body{
+    padding-bottom:110px;
+}
+</style>
+
+<script>
+
+(function(){
+
+let key="";
+let width=0;
+let height=0;
+
+const w=window.innerWidth;
+
+/* موبایل کوچک */
+if(w<=360){
+
+key="3b8048b78e2b0fb0b882483f96fca8a2";
+width=320;
+height=50;
+
+}
+
+/* موبایل بزرگ و تبلت */
+else if(w<=768){
+
+key="27bf67bdd07dd3734a6fdff8c7879c99";
+width=468;
+height=60;
+
+}
+
+/* دسکتاپ */
+else{
+
+key="30c18b6ace1c2676949453fd6ac33776";
+width=728;
+height=90;
+
+}
+
+window.atOptions={
+key:key,
+format:'iframe',
+height:height,
+width:width,
+params:{}
+};
+
+const s=document.createElement("script");
+
+s.src=
+"https://speedingdeadlyplays.com/"
++key+
+"/invoke.js";
+
+s.async=true;
+
+document
+.getElementById("floating-ad")
+.appendChild(s);
+
+})();
+
+</script>
 </body>
 </html>
