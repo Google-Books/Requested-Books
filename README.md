@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Requested Books</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* --- CSS VARIABLES & THEMES --- */
         :root {
@@ -347,7 +348,6 @@
             gap: 10px;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -411,7 +411,7 @@
     </div>
 
     <script>
-        // --- SUPABASE INITIALIZATION ---
+        // --- SUPABASE CONFIGURATION ---
         const supabaseUrl = 'https://pvfxhaopsdqjdcggggbp.supabase.co';
         const supabaseKey = 'sb_publishable_rQZFqyrqdAygBoMfK8EEMg_K9QC4akz';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -466,6 +466,7 @@
             }
         }
         
+        // --- NEW: EXIT ADMIN MODE ---
         function exitAdmin() {
             isAdmin = false;
             editingId = null; 
@@ -482,16 +483,14 @@
             return `${d.toLocaleDateString(undefined, dateOpts)} at ${d.toLocaleTimeString(undefined, timeOpts)}`;
         }
 
-        // --- DATA FETCHING ---
+        // --- SUPABASE DATA FETCHING ---
         async function fetchTemplates() {
             const { data, error } = await supabase
                 .from('books')
                 .select('*')
                 .order('id', { ascending: false });
-
-            if (error) {
-                console.error("Error fetching data:", error);
-            } else {
+            
+            if (!error) {
                 templates = data || [];
                 renderTemplates();
             }
@@ -518,22 +517,17 @@
                 .from('books')
                 .insert([newTemplate])
                 .select();
-
-            if (error) {
-                console.error("Error saving data:", error);
-                alert("خطا در ذخیره اطلاعات در دیتابیس.");
-            } else {
-                if(data && data.length > 0) {
-                    templates.unshift(data[0]);
-                } else {
-                    fetchTemplates();
-                }
+            
+            if (!error && data) {
+                templates.unshift(data[0]); 
                 
                 document.getElementById('master-name').value = '';
                 document.getElementById('master-datetime').value = '';
                 document.getElementById('master-link').value = '';
                 
                 renderTemplates();
+            } else {
+                alert("خطا در ذخیره کردن اطلاعات در دیتابیس.");
             }
         }
 
@@ -543,13 +537,12 @@
                     .from('books')
                     .delete()
                     .eq('id', id);
-
-                if (error) {
-                    console.error("Error deleting data:", error);
-                    alert("خطا در حذف اطلاعات.");
-                } else {
+                
+                if (!error) {
                     templates = templates.filter(t => t.id !== id);
                     renderTemplates();
+                } else {
+                    alert("خطا در حذف اطلاعات از دیتابیس.");
                 }
             }
         }
@@ -575,16 +568,12 @@
                 return;
             }
 
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('books')
                 .update({ name: updatedName, datetime: updatedDate, link: updatedLink })
-                .eq('id', id)
-                .select();
+                .eq('id', id);
 
-            if (error) {
-                console.error("Error updating data:", error);
-                alert("خطا در ویرایش اطلاعات.");
-            } else {
+            if (!error) {
                 const templateIndex = templates.findIndex(t => t.id === id);
                 if (templateIndex > -1) {
                     templates[templateIndex].name = updatedName;
@@ -593,6 +582,8 @@
                 }
                 editingId = null;
                 renderTemplates();
+            } else {
+                alert("خطا در ویرایش اطلاعات دیتابیس.");
             }
         }
 
@@ -663,7 +654,7 @@
             });
         }
 
-        // وقتی صفحه باز میشه اطلاعات رو از دیتابیس بخون
+        // به جای رندر خالی اولیه، اول اطلاعات رو از دیتابیس میگیریم و بعد نمایش میدیم
         fetchTemplates();
     </script>
 
@@ -682,15 +673,15 @@
             const w = window.innerWidth;
           
           if (w <= 360) {
-            key = '3b8048b78e2b0fb0b882483f96fca8a2'; 
+            key = '3b8048b78e2b0fb0b882483f96fca8a2'; // کد تبلیغ ۳۲۰ در ۵۰ خودت رو بذار
             width = 320;
             height = 50;
           } else if (w <= 768) {
-            key = '27bf67bdd07dd3734a6fdff8c7879c99'; 
+            key = '27bf67bdd07dd3734a6fdff8c7879c99'; // کد تبلیغ ۴۶۸ در ۶۰ خودت رو بذار
             width = 468;
             height = 60;
           } else {
-            key = '30c18b6ace1c2676949453fd6ac33776'; 
+            key = '30c18b6ace1c2676949453fd6ac33776'; // کد تبلیغ ۷۲۸ در ۹۰ خودت رو بذار
             width = 728;
             height = 90;
           }
