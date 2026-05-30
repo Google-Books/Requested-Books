@@ -347,6 +347,7 @@
             gap: 10px;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -410,8 +411,13 @@
     </div>
 
     <script>
+        // --- SUPABASE INITIALIZATION (جایگزین localStorage) ---
+        const supabaseUrl = 'https://pvfxhaopsdqjdcggggbp.supabase.co';
+        const supabaseKey = 'sb_publishable_rQZFqyrqdAygBoMfK8EEMg_K9QC4akz';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
         // --- STATE MANAGEMENT ---
-        let templates = JSON.parse(localStorage.getItem('requested_books_v2')) || [];
+        let templates = [];
         let isAdmin = false;
         let editingId = null; 
 
@@ -477,8 +483,21 @@
             return `${d.toLocaleDateString(undefined, dateOpts)} at ${d.toLocaleTimeString(undefined, timeOpts)}`;
         }
 
+        // --- DATA FETCHING (اضافه شده برای خواندن از دیتابیس) ---
+        async function fetchTemplates() {
+            const { data, error } = await supabase
+                .from('books')
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (!error) {
+                templates = data || [];
+                renderTemplates();
+            }
+        }
+
         // --- TEMPLATE LOGIC ---
-        function cloneTemplate() {
+        async function cloneTemplate() {
             const nameInput = document.getElementById('master-name').value.trim();
             const datetimeInput = document.getElementById('master-datetime').value;
             const linkInput = document.getElementById('master-link').value.trim();
@@ -489,27 +508,38 @@
             }
 
             const newTemplate = {
-                id: Date.now(),
                 name: nameInput,
                 datetime: datetimeInput,
                 link: linkInput
             };
 
-            templates.unshift(newTemplate); 
-            saveData();
-            
-            document.getElementById('master-name').value = '';
-            document.getElementById('master-datetime').value = '';
-            document.getElementById('master-link').value = '';
-            
-            renderTemplates();
+            const { data, error } = await supabase.from('books').insert([newTemplate]).select();
+
+            if (!error) {
+                if(data && data.length > 0) {
+                    templates.unshift(data[0]);
+                } else {
+                    fetchTemplates();
+                }
+                document.getElementById('master-name').value = '';
+                document.getElementById('master-datetime').value = '';
+                document.getElementById('master-link').value = '';
+                renderTemplates();
+            } else {
+                alert("خطا در ارتباط با سرور!");
+            }
         }
 
-        function deleteTemplate(id) {
+        async function deleteTemplate(id) {
             if (confirm("Delete this published template?")) {
-                templates = templates.filter(t => t.id !== id);
-                saveData();
-                renderTemplates();
+                const { error } = await supabase.from('books').delete().eq('id', id);
+
+                if (!error) {
+                    templates = templates.filter(t => t.id !== id);
+                    renderTemplates();
+                } else {
+                    alert("خطا در حذف اطلاعات!");
+                }
             }
         }
 
@@ -524,7 +554,7 @@
             renderTemplates();
         }
 
-        function saveEdit(id) {
+        async function saveEdit(id) {
             const updatedName = document.getElementById(`edit-name-${id}`).value.trim();
             const updatedDate = document.getElementById(`edit-datetime-${id}`).value;
             const updatedLink = document.getElementById(`edit-link-${id}`).value.trim();
@@ -534,20 +564,23 @@
                 return;
             }
 
-            const templateIndex = templates.findIndex(t => t.id === id);
-            if (templateIndex > -1) {
-                templates[templateIndex].name = updatedName;
-                templates[templateIndex].datetime = updatedDate;
-                templates[templateIndex].link = updatedLink;
-                saveData();
+            const { error } = await supabase
+                .from('books')
+                .update({ name: updatedName, datetime: updatedDate, link: updatedLink })
+                .eq('id', id);
+
+            if (!error) {
+                const templateIndex = templates.findIndex(t => t.id === id);
+                if (templateIndex > -1) {
+                    templates[templateIndex].name = updatedName;
+                    templates[templateIndex].datetime = updatedDate;
+                    templates[templateIndex].link = updatedLink;
+                }
+                editingId = null;
+                renderTemplates();
+            } else {
+                alert("خطا در ویرایش اطلاعات!");
             }
-
-            editingId = null;
-            renderTemplates();
-        }
-
-        function saveData() {
-            localStorage.setItem('requested_books_v2', JSON.stringify(templates));
         }
 
         // --- RENDER UI ---
@@ -617,7 +650,8 @@
             });
         }
 
-        renderTemplates();
+        // فراخوانی اطلاعات در هنگام باز شدن سایت
+        fetchTemplates();
     </script>
 
     <script type='text/javascript' src='//speedingdeadlyplays.com/YOUR_SOCIAL_BAR_CODE/invoke.js'></script>
@@ -633,20 +667,20 @@
             let width = 0; 
             let height = 0; 
             const w = window.innerWidth;
-
-            if (w <= 360) {
-                key = "YOUR_MOBILE_KEY"; 
-                width = 320; 
-                height = 50;
-            } else if (w <= 768) {
-                key = "YOUR_TABLET_KEY"; 
-                width = 468; 
-                height = 60;
-            } else {
-                key = "YOUR_DESKTOP_KEY"; 
-                width = 728; 
-                height = 90;
-            }
+          
+          if (w <= 360) {
+            key = '3b8048b78e2b0fb0b882483f96fca8a2'; // کد تبلیغ ۳۲۰ در ۵۰ خودت رو بذار
+            width = 320;
+            height = 50;
+          } else if (w <= 768) {
+            key = '27bf67bdd07dd3734a6fdff8c7879c99'; // کد تبلیغ ۴۶۸ در ۶۰ خودت رو بذار
+            width = 468;
+            height = 60;
+          } else {
+            key = '30c18b6ace1c2676949453fd6ac33776'; // کد تبلیغ ۷۲۸ در ۹۰ خودت رو بذار
+            width = 728;
+            height = 90;
+          }
 
             window.atOptions = { 
                 key: key, 
