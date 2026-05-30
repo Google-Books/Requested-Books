@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Requested Books</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* --- CSS VARIABLES & THEMES --- */
         :root {
@@ -348,6 +347,7 @@
             gap: 10px;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -411,7 +411,7 @@
     </div>
 
     <script>
-        // --- SUPABASE CONFIGURATION ---
+        // --- SUPABASE INITIALIZATION (جایگزین localStorage) ---
         const supabaseUrl = 'https://pvfxhaopsdqjdcggggbp.supabase.co';
         const supabaseKey = 'sb_publishable_rQZFqyrqdAygBoMfK8EEMg_K9QC4akz';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -483,13 +483,13 @@
             return `${d.toLocaleDateString(undefined, dateOpts)} at ${d.toLocaleTimeString(undefined, timeOpts)}`;
         }
 
-        // --- SUPABASE DATA FETCHING ---
+        // --- DATA FETCHING (اضافه شده برای خواندن از دیتابیس) ---
         async function fetchTemplates() {
             const { data, error } = await supabase
                 .from('books')
                 .select('*')
                 .order('id', { ascending: false });
-            
+
             if (!error) {
                 templates = data || [];
                 renderTemplates();
@@ -513,36 +513,32 @@
                 link: linkInput
             };
 
-            const { data, error } = await supabase
-                .from('books')
-                .insert([newTemplate])
-                .select();
-            
-            if (!error && data) {
-                templates.unshift(data[0]); 
-                
+            const { data, error } = await supabase.from('books').insert([newTemplate]).select();
+
+            if (!error) {
+                if(data && data.length > 0) {
+                    templates.unshift(data[0]);
+                } else {
+                    fetchTemplates();
+                }
                 document.getElementById('master-name').value = '';
                 document.getElementById('master-datetime').value = '';
                 document.getElementById('master-link').value = '';
-                
                 renderTemplates();
             } else {
-                alert("خطا در ذخیره کردن اطلاعات در دیتابیس.");
+                alert("خطا در ارتباط با سرور!");
             }
         }
 
         async function deleteTemplate(id) {
             if (confirm("Delete this published template?")) {
-                const { error } = await supabase
-                    .from('books')
-                    .delete()
-                    .eq('id', id);
-                
+                const { error } = await supabase.from('books').delete().eq('id', id);
+
                 if (!error) {
                     templates = templates.filter(t => t.id !== id);
                     renderTemplates();
                 } else {
-                    alert("خطا در حذف اطلاعات از دیتابیس.");
+                    alert("خطا در حذف اطلاعات!");
                 }
             }
         }
@@ -583,7 +579,7 @@
                 editingId = null;
                 renderTemplates();
             } else {
-                alert("خطا در ویرایش اطلاعات دیتابیس.");
+                alert("خطا در ویرایش اطلاعات!");
             }
         }
 
@@ -654,7 +650,7 @@
             });
         }
 
-        // به جای رندر خالی اولیه، اول اطلاعات رو از دیتابیس میگیریم و بعد نمایش میدیم
+        // فراخوانی اطلاعات در هنگام باز شدن سایت
         fetchTemplates();
     </script>
 
