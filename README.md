@@ -157,27 +157,7 @@
     <div class="container">
         <div id="user-view">
             
-            <div class="card">
-                <div class="book-header">
-                    <div class="neon-book">📘</div>
-                    <div class="book-info">
-                        <h3>Billionaire's dark lady</h3>
-                        <p>📅 May 30, 2026 at 02:40 AM</p>
-                    </div>
-                </div>
-                <a href="https://storage.to/Id7AgvdkU" target="_blank" class="btn">📥 Download File</a>
-            </div>
 
-<div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>The Richest Man In Babylon</h3>
-            <p>📅 May 30, 2026 at 03:02 AM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/IeMXUEphi" target="_blank" class="btn">📥 Download File</a>
-</div>
 
             <div class="card">
     <div class="book-header">
