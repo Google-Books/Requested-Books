@@ -159,28 +159,6 @@
             
 
 
-            <div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>La canción de Aquiles</h3>
-            <p>📅 June 3, 2026 at 12:37 AM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/n59RqC4Gg" target="_blank" class="btn">📥 Download File</a>
-</div>
-            
-
-<div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>Atomic Habits</h3>
-            <p>📅 May 30, 2026 at 03:20 AM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/IeN7Gqn3F" target="_blank" class="btn">📥 Download File</a>
-</div>
 
             <div class="card">
     <div class="book-header">
@@ -194,6 +172,17 @@
 </div>
             
 
+         <div class="card">
+    <div class="book-header">
+        <div class="neon-book">📘</div>
+        <div class="book-info">
+            <h3>Powerless</h3>
+            <p>📅 June 6, 2026 at 3:41 PM</p>
+        </div>
+    </div>
+    <a href="https://storage.to/lVZhKbuOV" target="_blank" class="btn">📥 Download File</a>
+</div>
+            
 
 
 
