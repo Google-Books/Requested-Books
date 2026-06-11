@@ -153,58 +153,45 @@
         <a href="https://google-books.github.io/MainPage/" class="back-btn">Back</a>
         <h1>Requested Books</h1>
     </header>
+<style>
+.notice-box{
+    margin:15px auto;
+    max-width:800px;
+    padding:10px 15px;
+    border-radius:14px;
+    border:2px solid #ff2a2a;
+    background:rgba(255,42,42,0.08);
+    box-shadow:
+        0 0 5px #ff2a2a,
+        0 0 10px #ff2a2a,
+        0 0 20px rgba(255,42,42,0.6);
+    text-align:center;
+}
 
+.notice-box p{
+    margin:0;
+    font-size:0.8rem;
+    color:#ff8a8a;
+}
+</style>
+
+<div class="notice-box">
+    <p>Requested books are automatically removed from this page 2 days after being published.</p>
+</div>
     <div class="container">
         <div id="user-view">
             
 
 
-
-            <div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>The murder on the link</h3>
-            <p>📅 June 5, 2026 at 8:37 AM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/BV67BWZ0q" target="_blank" class="btn">📥 Download File</a>
-</div>
-            
-
          <div class="card">
     <div class="book-header">
         <div class="neon-book">📘</div>
         <div class="book-info">
-            <h3>Powerless</h3>
-            <p>📅 June 6, 2026 at 3:41 PM</p>
+            <h3>The 3 body problem </h3>
+            <p>📅 June 11, 2026 at 1:10 PM</p>
         </div>
     </div>
-    <a href="https://storage.to/lVZhKbuOV" target="_blank" class="btn">📥 Download File</a>
-</div>
-            
-
-         <div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>Beyond The Wan</h3>
-            <p>📅 June 6, 2026 at 1:41 AM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/YRuBlye2A" target="_blank" class="btn">📥 Download File</a>
-</div>
-
-
-         <div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>Alchemised</h3>
-            <p>📅 June 7, 2026 at 1:41 PM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/7akABm62W" target="_blank" class="btn">📥 Download File</a>
+    <a href="https://storage.to/nXIUbem1s" target="_blank" class="btn">📥 Download File</a>
 </div>
 
 
