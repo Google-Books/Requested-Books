@@ -180,31 +180,7 @@
 </div>
     <div class="container">
         <div id="user-view">
-            
-
-
-         <div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>The 3 body problem </h3>
-            <p>📅 June 11, 2026 at 1:10 PM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/nXIUbem1s" target="_blank" class="btn">📥 Download File</a>
-</div>
-
-
-         <div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>Todo es cuestion de quimica</h3>
-            <p>📅 June 13, 2026 at 11:00 PM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/6ifQr1st7" target="_blank" class="btn">📥 Download File</a>
-</div>
+        
 
 
          <div class="card">
@@ -219,6 +195,16 @@
 </div>
 
 
+  <div class="card">
+    <div class="book-header">
+        <div class="neon-book">📘</div>
+        <div class="book-info">
+            <h3>A Hipótese do Amor</h3>
+            <p>📅 June 16, 2026 at 5:08 PM</p>
+        </div>
+    </div>
+    <a href="https://storage.to/G8TcUqdxh" target="_blank" class="btn">📥 Download File</a>
+</div>
 
             
 
@@ -260,4 +246,3 @@
 
 </body>
 </html>
-
