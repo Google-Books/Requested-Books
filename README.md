@@ -187,11 +187,11 @@
     <div class="book-header">
         <div class="neon-book">📘</div>
         <div class="book-info">
-            <h3>Caught Up</h3>
-            <p>📅 June 14, 2026 at 7:08 PM</p>
+            <h3>The White Nights</h3>
+            <p>📅 June 22, 2026 at 4:08 PM</p>
         </div>
     </div>
-    <a href="https://storage.to/p25k7Hmtr" target="_blank" class="btn">📥 Download File</a>
+    <a href="https://storage.to/gH2CpTH8A" target="_blank" class="btn">📥 Download File</a>
 </div>
 
 
@@ -199,16 +199,36 @@
     <div class="book-header">
         <div class="neon-book">📘</div>
         <div class="book-info">
-            <h3>A Hipótese do Amor</h3>
-            <p>📅 June 16, 2026 at 5:08 PM</p>
+            <h3>The Lantern of Lost Memories</h3>
+            <p>📅 June22, 2026 at 4:09 PM</p>
         </div>
     </div>
-    <a href="https://storage.to/G8TcUqdxh" target="_blank" class="btn">📥 Download File</a>
+    <a href="https://storage.to/LAa6umrrU" target="_blank" class="btn">📥 Download File</a>
 </div>
 
             
+  <div class="card">
+    <div class="book-header">
+        <div class="neon-book">📘</div>
+        <div class="book-info">
+            <h3>Arrangements in Blue</h3>
+            <p>📅 June22, 2026 at 4:10 PM</p>
+        </div>
+    </div>
+    <a href="https://storage.to/xz7wLVnVf" target="_blank" class="btn">📥 Download File</a>
+</div>
 
 
+  <div class="card">
+    <div class="book-header">
+        <div class="neon-book">📘</div>
+        <div class="book-info">
+            <h3>Letters to Milena</h3>
+            <p>📅 June22, 2026 at 4:12 PM</p>
+        </div>
+    </div>
+    <a href="https://storage.to/phyoT36rd" target="_blank" class="btn">📥 Download File</a>
+</div>
 
             
 
