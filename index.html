@@ -230,6 +230,21 @@
     <a href="https://storage.to/phyoT36rd" target="_blank" class="btn">📥 Download File</a>
 </div>
 
+
+
+  <div class="card">
+    <div class="book-header">
+        <div class="neon-book">📘</div>
+        <div class="book-info">
+            <h3>The Courage to Be Disliked</h3>
+            <p>📅 June22, 2026 at 4:12 PM</p>
+        </div>
+    </div>
+    <a href="https://storage.to/4EXXv2TY2" target="_blank" class="btn">📥 Download File</a>
+</div>
+
+
+
             
 
             
