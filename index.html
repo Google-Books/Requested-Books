@@ -187,11 +187,11 @@
     <div class="book-header">
         <div class="neon-book">📘</div>
         <div class="book-info">
-            <h3>The White Nights</h3>
-            <p>📅 June 22, 2026 at 4:08 PM</p>
+            <h3>Noise</h3>
+            <p>📅 June 30, 2026 at 1:08 PM</p>
         </div>
     </div>
-    <a href="https://storage.to/gH2CpTH8A" target="_blank" class="btn">📥 Download File</a>
+    <a href="https://storage.to/h3PCKKUW2" target="_blank" class="btn">📥 Download File</a>
 </div>
 
 
@@ -199,49 +199,13 @@
     <div class="book-header">
         <div class="neon-book">📘</div>
         <div class="book-info">
-            <h3>The Lantern of Lost Memories</h3>
-            <p>📅 June22, 2026 at 4:09 PM</p>
+            <h3>The new china playbook</h3>
+            <p>📅 June30, 2026 at 1:09 PM</p>
         </div>
     </div>
-    <a href="https://storage.to/LAa6umrrU" target="_blank" class="btn">📥 Download File</a>
+    <a href="https://storage.to/wUCfcUd8U" target="_blank" class="btn">📥 Download File</a>
 </div>
 
-            
-  <div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>Arrangements in Blue</h3>
-            <p>📅 June22, 2026 at 4:10 PM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/xz7wLVnVf" target="_blank" class="btn">📥 Download File</a>
-</div>
-
-
-  <div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>Letters to Milena</h3>
-            <p>📅 June22, 2026 at 4:12 PM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/phyoT36rd" target="_blank" class="btn">📥 Download File</a>
-</div>
-
-
-
-  <div class="card">
-    <div class="book-header">
-        <div class="neon-book">📘</div>
-        <div class="book-info">
-            <h3>The Courage to Be Disliked</h3>
-            <p>📅 June22, 2026 at 4:12 PM</p>
-        </div>
-    </div>
-    <a href="https://storage.to/4EXXv2TY2" target="_blank" class="btn">📥 Download File</a>
-</div>
 
 
 
